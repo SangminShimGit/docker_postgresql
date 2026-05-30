@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: my_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      -- 로컬의 init 폴더를 컨테이너의 초기화 폴더로 마운트
+      - ./init:/docker-entrypoint-initdb.d
+      -- 데이터 영속성을 위한 볼륨 설정
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
